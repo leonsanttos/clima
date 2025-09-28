@@ -106,9 +106,9 @@ async def clima(update: Update, context: ContextTypes.DEFAULT_TYPE):
 telegram_app.add_handler(CommandHandler("clima", clima))
 
 # ===== ROTA DE TESTE (Home) =====
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"status": "Bot ativo na Vercel!"})
+@app.route("/")
+def index():
+    return "🚀 Servidor funcionando!"
 
 # ===== WEBHOOK PARA VERCEL =====
 @app.route("/webhook", methods=["POST"])
