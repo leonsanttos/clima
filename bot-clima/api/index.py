@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from datetime import datetime, timedelta, timezone
@@ -105,13 +105,18 @@ async def clima(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 telegram_app.add_handler(CommandHandler("clima", clima))
 
+# ===== ROTA DE TESTE (Home) =====
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "Bot ativo na Vercel!"})
+
 # ===== WEBHOOK PARA VERCEL =====
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.get_json(force=True)
     update = Update.de_json(data, telegram_app.bot)
     telegram_app.update_queue.put(update)
-    return "ok"
+    return jsonify({"status":"ok"})
 
 # ===== PARA RODAR LOCALMENTE COM POLLING =====
 VERCEL_ENV = os.getenv("VERCEL")  # Vercel define isso automaticamente
